@@ -6,6 +6,7 @@ import { initContractUsersMantras, ContractUsersMantras } from "./ContractUsersM
 import { initUserMantraListen, UserMantraListen } from "./UserMantraListen";
 import { initElevenLabsFiles, ElevenLabsFiles } from "./ElevenLabsFiles";
 import { initQueue, Queue } from "./Queue";
+import { initSoundFiles, SoundFiles } from "./SoundFiles";
 
 import { applyAssociations } from "./_associations";
 
@@ -16,6 +17,7 @@ export function initModels() {
   initUserMantraListen();
   initElevenLabsFiles();
   initQueue();
+  initSoundFiles();
 
   applyAssociations();
 
@@ -27,6 +29,7 @@ export function initModels() {
     UserMantraListen,
     ElevenLabsFiles,
     Queue,
+    SoundFiles,
   };
 }
 
@@ -38,4 +41,5 @@ export {
   UserMantraListen,
   ElevenLabsFiles,
   Queue,
+  SoundFiles,
 };
