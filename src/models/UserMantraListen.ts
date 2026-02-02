@@ -1,0 +1,72 @@
+import {
+  Model,
+  InferAttributes,
+  InferCreationAttributes,
+  CreationOptional,
+  DataTypes,
+  ForeignKey,
+} from "sequelize";
+import { sequelize } from "./_connection";
+import { User } from "./User";
+import { Mantra } from "./Mantra";
+
+export class UserMantraListen extends Model<
+  InferAttributes<UserMantraListen>,
+  InferCreationAttributes<UserMantraListen>
+> {
+  declare id: CreationOptional<number>;
+  declare publicId: string;
+  declare userId: ForeignKey<User["id"]>;
+  declare mantraId: ForeignKey<Mantra["id"]>;
+  declare listenCount: number;
+
+  // Timestamps
+  declare createdAt: CreationOptional<Date>;
+  declare updatedAt: CreationOptional<Date>;
+}
+
+export function initUserMantraListen() {
+  UserMantraListen.init(
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+      },
+      publicId: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "users",
+          key: "id",
+        },
+      },
+      mantraId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "mantras",
+          key: "id",
+        },
+      },
+      listenCount: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
+      createdAt: DataTypes.DATE,
+      updatedAt: DataTypes.DATE,
+    },
+    {
+      sequelize,
+      tableName: "user_mantra_listens",
+      timestamps: true,
+    }
+  );
+  return UserMantraListen;
+}

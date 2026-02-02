@@ -1,0 +1,71 @@
+import {
+  Model,
+  InferAttributes,
+  InferCreationAttributes,
+  CreationOptional,
+  DataTypes,
+} from "sequelize";
+import { sequelize } from "./_connection";
+
+export class User extends Model<
+  InferAttributes<User>,
+  InferCreationAttributes<User>
+> {
+  declare id: CreationOptional<number>;
+  declare publicId: string;
+  declare email: string;
+  declare password: string;
+  declare isEmailVerified: CreationOptional<boolean>;
+  declare emailVerifiedAt: Date | null;
+
+  // Timestamps
+  declare createdAt: CreationOptional<Date>;
+  declare updatedAt: CreationOptional<Date>;
+}
+
+export function initUser() {
+  User.init(
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+      },
+      publicId: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        set(value: string) {
+          // Normalize email to lowercase
+          this.setDataValue("email", value.toLowerCase());
+        },
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      isEmailVerified: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
+      emailVerifiedAt: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
+      createdAt: DataTypes.DATE,
+      updatedAt: DataTypes.DATE,
+    },
+    {
+      sequelize,
+      tableName: "users",
+      timestamps: true,
+    }
+  );
+  return User;
+}
