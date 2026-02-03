@@ -3,6 +3,8 @@ import { Mantra } from "./Mantra";
 import { ContractUsersMantras } from "./ContractUsersMantras";
 import { UserMantraListen } from "./UserMantraListen";
 import { Queue } from "./Queue";
+import { ElevenLabsFiles } from "./ElevenLabsFiles";
+import { ContractMantrasElevenLabsFiles } from "./ContractMantrasElevenLabsFiles";
 
 export function applyAssociations() {
   // User ↔ Mantra (many-to-many through ContractUsersMantras)
@@ -61,5 +63,31 @@ export function applyAssociations() {
   User.hasMany(Queue, {
     foreignKey: "userId",
     as: "queueItems",
+  });
+
+  // Mantra ↔ ElevenLabsFiles (many-to-many through ContractMantrasElevenLabsFiles)
+  Mantra.belongsToMany(ElevenLabsFiles, {
+    through: ContractMantrasElevenLabsFiles,
+    foreignKey: "mantraId",
+    otherKey: "elevenLabsFilesId",
+    as: "elevenLabsFiles",
+  });
+
+  ElevenLabsFiles.belongsToMany(Mantra, {
+    through: ContractMantrasElevenLabsFiles,
+    foreignKey: "elevenLabsFilesId",
+    otherKey: "mantraId",
+    as: "mantras",
+  });
+
+  // ContractMantrasElevenLabsFiles associations
+  ContractMantrasElevenLabsFiles.belongsTo(Mantra, {
+    foreignKey: "mantraId",
+    as: "mantra",
+  });
+
+  ContractMantrasElevenLabsFiles.belongsTo(ElevenLabsFiles, {
+    foreignKey: "elevenLabsFilesId",
+    as: "elevenLabsFile",
   });
 }

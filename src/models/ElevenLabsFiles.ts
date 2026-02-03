@@ -14,6 +14,7 @@ export class ElevenLabsFiles extends Model<
   declare id: CreationOptional<number>;
   declare filename: string | null;
   declare filePath: string | null;
+  declare text: string | null;
 
   // Timestamps
   declare createdAt: CreationOptional<Date>;
@@ -33,6 +34,10 @@ export function initElevenLabsFiles() {
         allowNull: true,
       },
       filePath: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      text: {
         type: DataTypes.STRING,
         allowNull: true,
       },
