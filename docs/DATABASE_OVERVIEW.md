@@ -11,7 +11,7 @@ Sequelize will handle the createdAt and updatedAt columns with timestamps: true.
 In your Mantrify01API or Mantrify01Queuer project, import the database package:
 
 ```javascript
-import { initModels, sequelize, User, Mantra, Queue, SoundFiles, ElevenLabsFiles, ContractMantrasElevenLabsFiles } from "mantrify01db";
+import { initModels, sequelize, User, Mantra, Queue, SoundFiles, ElevenLabsFiles, ContractMantrasElevenLabsFiles, ContractMantrasSoundFiles } from "mantrify01db";
 ```
 
 ### Environment Variables
@@ -132,6 +132,12 @@ const mantraFileContract = await ContractMantrasElevenLabsFiles.create({
   elevenLabsFilesId: elevenLabsFile.id,
 });
 
+// Associate a mantra with a sound file
+const mantraSoundContract = await ContractMantrasSoundFiles.create({
+  mantraId: mantra.id,
+  soundFilesId: soundFile.id,
+});
+
 // Track a listen event
 const listen = await UserMantraListen.create({
   userId: user.id,
@@ -154,6 +160,16 @@ const userWithMantras = await User.findByPk(userId, {
 // Find mantra with associated ElevenLabs files
 const mantraWithFiles = await Mantra.findByPk(mantraId, {
   include: [{ association: "elevenLabsFiles" }],
+});
+
+// Find mantra with associated sound files
+const mantraWithSounds = await Mantra.findByPk(mantraId, {
+  include: [{ association: "soundFiles" }],
+});
+
+// Find sound file with associated mantras
+const soundFileWithMantras = await SoundFiles.findByPk(soundFileId, {
+  include: [{ association: "mantras" }],
 });
 ```
 
@@ -287,3 +303,13 @@ try {
 | name        | string | NO   |                            |
 | description | string | YES  |                            |
 | filename    | string | NO   | filename of the sound file |
+
+### Table: `ContractMantrasSoundFiles`
+
+#### Columns
+
+| Column       | Type         | Null | Notes                    |
+| ------------ | ------------ | ---- | ------------------------ |
+| id           | id           | NO   | PK                       |
+| mantraId     | mantraId     | NO   | FK → mantras.id          |
+| soundFilesId | soundFilesId | NO   | FK → sound_files.id      |

@@ -5,6 +5,8 @@ import { UserMantraListen } from "./UserMantraListen";
 import { Queue } from "./Queue";
 import { ElevenLabsFiles } from "./ElevenLabsFiles";
 import { ContractMantrasElevenLabsFiles } from "./ContractMantrasElevenLabsFiles";
+import { SoundFiles } from "./SoundFiles";
+import { ContractMantrasSoundFiles } from "./ContractMantrasSoundFiles";
 
 export function applyAssociations() {
   // User ↔ Mantra (many-to-many through ContractUsersMantras)
@@ -89,5 +91,31 @@ export function applyAssociations() {
   ContractMantrasElevenLabsFiles.belongsTo(ElevenLabsFiles, {
     foreignKey: "elevenLabsFilesId",
     as: "elevenLabsFile",
+  });
+
+  // Mantra ↔ SoundFiles (many-to-many through ContractMantrasSoundFiles)
+  Mantra.belongsToMany(SoundFiles, {
+    through: ContractMantrasSoundFiles,
+    foreignKey: "mantraId",
+    otherKey: "soundFilesId",
+    as: "soundFiles",
+  });
+
+  SoundFiles.belongsToMany(Mantra, {
+    through: ContractMantrasSoundFiles,
+    foreignKey: "soundFilesId",
+    otherKey: "mantraId",
+    as: "mantras",
+  });
+
+  // ContractMantrasSoundFiles associations
+  ContractMantrasSoundFiles.belongsTo(Mantra, {
+    foreignKey: "mantraId",
+    as: "mantra",
+  });
+
+  ContractMantrasSoundFiles.belongsTo(SoundFiles, {
+    foreignKey: "soundFilesId",
+    as: "soundFile",
   });
 }

@@ -8,6 +8,7 @@ import { initElevenLabsFiles, ElevenLabsFiles } from "./ElevenLabsFiles";
 import { initQueue, Queue } from "./Queue";
 import { initSoundFiles, SoundFiles } from "./SoundFiles";
 import { initContractMantrasElevenLabsFiles, ContractMantrasElevenLabsFiles } from "./ContractMantrasElevenLabsFiles";
+import { initContractMantrasSoundFiles, ContractMantrasSoundFiles } from "./ContractMantrasSoundFiles";
 
 import { applyAssociations } from "./_associations";
 
@@ -20,6 +21,7 @@ export function initModels() {
   initQueue();
   initSoundFiles();
   initContractMantrasElevenLabsFiles();
+  initContractMantrasSoundFiles();
 
   applyAssociations();
 
@@ -33,6 +35,7 @@ export function initModels() {
     Queue,
     SoundFiles,
     ContractMantrasElevenLabsFiles,
+    ContractMantrasSoundFiles,
   };
 }
 
@@ -46,4 +49,5 @@ export {
   Queue,
   SoundFiles,
   ContractMantrasElevenLabsFiles,
+  ContractMantrasSoundFiles,
 };
