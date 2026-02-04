@@ -17,6 +17,7 @@ export class Mantra extends Model<
   declare visibility: CreationOptional<string>;
   declare filename: string | null;
   declare filePath: string | null;
+  declare listens: CreationOptional<number>;
 
   // Timestamps
   declare createdAt: CreationOptional<Date>;
@@ -51,6 +52,11 @@ export function initMantra() {
       filePath: {
         type: DataTypes.STRING,
         allowNull: true,
+      },
+      listens: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
       },
       createdAt: DataTypes.DATE,
       updatedAt: DataTypes.DATE,
